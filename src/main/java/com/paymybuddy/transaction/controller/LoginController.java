@@ -13,6 +13,7 @@ public class LoginController {
         return "Welcome, User !";
     }
 
+
     @RequestMapping("/*")
     @RolesAllowed("USER")
     public String getGithub() {
