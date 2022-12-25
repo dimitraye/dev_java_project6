@@ -17,17 +17,28 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth.inMemoryAuthentication()
                 .withUser("springuser").password(passwordEncoder().encode("spring123")).roles("USER");
+
     }
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/user").hasRole("USER")
-                .anyRequest().authenticated()
+                // .antMatchers("/admin").hasRole("ADMIN")
+                // .antMatchers("/user").hasRole("USER")
+                //.antMatchers("/h2-console").hasRole("USER")
+                //.anyRequest().permitAll()
+                .antMatchers("/").permitAll().and()
+                .authorizeRequests().antMatchers("/h2-console/**").permitAll()
                 .and()
                 .formLogin()
                 .and()
-                .oauth2Login();
+                .oauth2Login()
+        ;
+        // TODO change config later
+        // TODO see https://springframework.guru/using-the-h2-database-console-in-spring-boot-with-spring-security/
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

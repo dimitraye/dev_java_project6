@@ -5,22 +5,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Transaction {
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private int balance;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private BankAccount accountSender;
-    @ManyToOne(fetch = FetchType.EAGER)
-    private BankAccount accountReceiver;
-    private Date date;
-    private double amount;
-    private String description;
+    @OneToMany
+    private List<Transfer> transactions;
+
+    @OneToOne(mappedBy = "account")
+    private User user;
+
 }

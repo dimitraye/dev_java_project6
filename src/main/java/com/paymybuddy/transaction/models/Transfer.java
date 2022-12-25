@@ -5,23 +5,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class UserAccount {
+public class Transfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String externalUserId;
-    @OneToMany
-    private List<UserAccount> buddies;
-    @OneToOne(cascade = CascadeType.ALL)
-    private BankAccount bankAccount;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Account accountSender;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Account accountReceiver;
+    private Date date;
+    private double amount;
+    private String description;
 }
