@@ -1,5 +1,6 @@
 package com.paymybuddy.transaction.models;
 
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,11 +18,25 @@ public class User {
     private long id;
     private String firstName;
     private String lastName;
-    private String email;
     private String externalUserId;
     @OneToMany
-    private List<User> buddies;
+    private List<User> buddies = new ArrayList<>();
     @OneToOne(cascade = CascadeType.ALL)
     private Account account;
+
+    private String username;
+    private String password;
+    private String roles;
+
+
+
+
+    public String getEmail() {
+        return username;
+    }
+
+    public void setEmail(String email) {
+        this.username = email;
+    }
 
 }

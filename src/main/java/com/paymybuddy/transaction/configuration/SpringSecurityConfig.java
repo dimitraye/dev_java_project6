@@ -1,18 +1,28 @@
 package com.paymybuddy.transaction.configuration;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.jmx.export.assembler.AbstractMBeanInfoAssembler;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Configuration
-@EnableWebSecurity
+/*@Configuration
+@EnableWebSecurity*/
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+/*
+    class LoginPageFilter extends GenericFilterBean {
+
+        @Override
+        public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws
+            IOException, ServletException {
+            if (SecurityContextHolder.getContext().getAuthentication() != null
+                && SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
+                && ((HttpServletRequest)request).getRequestURI().equals("/login")) {
+                System.out.println("user is authenticated but trying to access login page, redirecting to /");
+                ((HttpServletResponse)response).sendRedirect("/");
+            }
+            chain.doFilter(request, response);
+        }
+
+    }
+
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth.inMemoryAuthentication()
@@ -21,20 +31,19 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        http.addFilterBefore(
+            new LoginPageFilter(), DefaultLoginPageGeneratingFilter.class);
+
         http.authorizeRequests()
-                // .antMatchers("/admin").hasRole("ADMIN")
-                // .antMatchers("/user").hasRole("USER")
-                //.antMatchers("/h2-console").hasRole("USER")
-                //.anyRequest().permitAll()
-                .antMatchers("/").permitAll().and()
-                .authorizeRequests().antMatchers("/h2-console/**").permitAll()
-                .and()
-                .formLogin()
-                .and()
-                .oauth2Login()
+            .antMatchers("/").permitAll().and()
+            .authorizeRequests().antMatchers("/h2-console/**").permitAll()
+            .and().authorizeRequests().antMatchers("/login").not().authenticated()
+            .and()
+            .oauth2Login()
+            .and()
+            .logout()
+            .logoutUrl("/logout")
         ;
-        // TODO change config later
-        // TODO see https://springframework.guru/using-the-h2-database-console-in-spring-boot-with-spring-security/
         http.csrf().disable();
         http.headers().frameOptions().disable();
     }
@@ -44,4 +53,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    private OidcIdToken getIdToken(OAuth2User principal){
+        if(principal instanceof DefaultOidcUser) {
+            DefaultOidcUser oidcUser = (DefaultOidcUser)principal;
+            return oidcUser.getIdToken();
+        }
+        return null;
+    }*/
 }
+
+
