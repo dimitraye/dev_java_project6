@@ -1,5 +1,6 @@
 package com.paymybuddy.transaction.models;
 
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,19 +12,19 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class BankAccount {
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private int balance;
+    private double balance;
 
     @OneToMany(mappedBy = "accountSender")
-    private List<Transaction> transactionsSender;
+    private List<Transfer> transfersSent = new ArrayList<>();
 
     @OneToMany(mappedBy = "accountReceiver")
-    private List<Transaction> transactionsReceiver;
+    private List<Transfer> transfersReceived = new ArrayList<>();
 
-    @OneToOne(mappedBy = "bankAccount")
-    private UserAccount userAccount;
+    @OneToOne(mappedBy = "account")
+    private User user;
 
 }
