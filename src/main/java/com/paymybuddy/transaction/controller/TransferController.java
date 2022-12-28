@@ -6,7 +6,6 @@ import com.paymybuddy.transaction.models.User;
 import com.paymybuddy.transaction.services.IAccountService;
 import com.paymybuddy.transaction.services.ITransferService;
 import com.paymybuddy.transaction.services.IUserService;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,44 +53,45 @@ public class TransferController {
 
     @PostMapping("/addtransfer")
     @Transactional
-    public String addTransfer(Principal principal, Transfer newTransfer, RedirectAttributes redirAttrs) {
+    public String addTransfer(Transfer newTransfer, RedirectAttributes redirAttrs) {
         System.out.println("enter in add transfer");
         // check if there is no missing info
         if (newTransfer == null) {
-            //error
+            redirAttrs.addFlashAttribute("error", "The data is empty");
+            return "redirect:/transfers";
         }
         if (newTransfer.getAccountReceiver() == null) {
-            //error
+            redirAttrs.addFlashAttribute("error", "The account receiver is empty");
+            return "redirect:/transfers";
         }
-        if (newTransfer.getAmount() == 0) {
-            //error
-        }
+
         User userInfo = userService.getUserDetails();
 
         // le compte existe
-        if (userInfo != null) {
-            Account account = userInfo.getAccount();
-            double amountToTransfer = newTransfer.getAmount() - (newTransfer.getAmount() * 0.005);
+        if (userInfo == null) {
+            redirAttrs.addFlashAttribute("error", "An error occured while trying to access your user account");
+            return "redirect:/transfers";
+        }
+        Account account = userInfo.getAccount();
+        double amountToTransfer = newTransfer.getAmount() - (newTransfer.getAmount() * 0.005);
 
-            // complete transfer data
-            newTransfer.setAmount(amountToTransfer);
-            newTransfer.setAccountSender(userInfo.getAccount());
-            newTransfer.setDate(new Date());
-            String description = StringUtils.hasText(newTransfer.getDescription()) ?
-                newTransfer.getDescription() : "uncategorized";
-            newTransfer.setDescription(description);
+        // complete transfer data
+        newTransfer.setAmount(amountToTransfer);
+        newTransfer.setAccountSender(userInfo.getAccount());
+        newTransfer.setDate(new Date());
+        String description = StringUtils.hasText(newTransfer.getDescription()) ?
+            newTransfer.getDescription() : "uncategorized";
+        newTransfer.setDescription(description);
 
-            // update the account balance
-            account.setBalance(account.getBalance() + amountToTransfer);
+        // update the account balance
+        account.setBalance(account.getBalance() + amountToTransfer);
 
-            try {
-                transferService.saveTransfert(newTransfer);
-                accountService.save(account);
-                redirAttrs.addFlashAttribute("success", "The transfer has been saved successfully!");
-            } catch (Exception e) {
-                redirAttrs.addAttribute("error", e.getMessage());
-            }
-
+        try {
+            transferService.saveTransfert(newTransfer);
+            accountService.save(account);
+            redirAttrs.addFlashAttribute("success", "The transfer has been executed successfully!");
+        } catch (Exception e) {
+            redirAttrs.addFlashAttribute("error", e.getMessage());
         }
         return "redirect:/transfers";
     }

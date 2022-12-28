@@ -27,19 +27,12 @@ public class UserController {
 
     @Autowired
     ITransferService transferService;
-    //endpoints
-    //Home
-    @RequestMapping("/home")
-    @RolesAllowed("USER")
-    public String getGithub() {
-        return "Welcome, GithubUser !";
-    }
 
 
 
-    //Money left on the account
+
     //Page d'accueil
-    @GetMapping("/index")
+    @GetMapping(value={"", "/", "/index"})
     public String index(Model model) {
         User userInfo = (User) model.getAttribute("user");
         List<Transfer> transfers = new ArrayList<>();
@@ -60,29 +53,29 @@ public class UserController {
         return "index";
     }
 
-
-    @PostMapping("/_adduser")
-    public String _addUser(User user, RedirectAttributes redirectAttrs) {
-
-        Account newAccount = new Account();
-        user.setAccount(newAccount);
-        User userFromDb = userService.save(user);
-
-        redirectAttrs.addFlashAttribute("user", userFromDb);
-        return "redirect:/index";
-    }
-
     @PostMapping("/adduser")
-    public String addUser(User user, RedirectAttributes redirectAttrs) {
+    public String addUser(User user, RedirectAttributes redirAttrs) {
 
         Account newAccount = new Account();
         user.setAccount(newAccount);
         user.setPassword(encoder.encode(user.getPassword()));
         user.setRoles("ROLE_USER");
-        User userFromDb = userService.save(user);
+        User userFromDb = userService.findByUsername(user.getUsername()).orElse(null);
 
-        redirectAttrs.addFlashAttribute("user", userFromDb);
-        return "redirect:/index";
+        if (userFromDb != null) {
+            redirAttrs.addFlashAttribute("error", "This email is already registered in our database");
+            return "redirect:/userform";
+        }
+
+        try {
+            userService.save(user);
+            redirAttrs.addFlashAttribute("success", "Your user account has been created successfully!");
+        } catch (Exception e) {
+            redirAttrs.addFlashAttribute("error", e.getMessage());
+        }
+
+        redirAttrs.addFlashAttribute("user", userFromDb);
+        return "redirect:/login";
     }
 
     @GetMapping("/userform")
@@ -94,28 +87,41 @@ public class UserController {
     @GetMapping("/addbuddy")
     public String addBudy(@RequestParam String email, RedirectAttributes redirAttrs) {
         System.out.println("enter in add buddy");
-        User userInfo = userService.getUserDetails();
-        userInfo = userService.findWithBuddiesAndAccountById(userInfo.getId());
+        User user = userService.getUserDetails();
+        user = userService.findWithBuddiesAndAccountById(user.getId());
 
         // le compte existe
-        if (userInfo != null) {
+        if (user != null) {
             // find the connection/buddy
             User buddy = userService.findByUsername(email).orElse(null);
-            if (buddy != null
-                && !userInfo.getEmail().equals(email)
-            ) {
-                userInfo.getBuddies().add(buddy);
+
+            if (buddy== null) {
+                redirAttrs.addFlashAttribute("error", "This email is not registered in our database");
+                return "redirect:/transfers";
             }
+            if (user.getEmail().equals(email)) {
+                redirAttrs.addFlashAttribute("error", "You can not add your own account as a buddy");
+                return "redirect:/transfers";
+            }
+
+            if (user.getBuddies().contains(buddy)) {
+                redirAttrs.addFlashAttribute("error", email + " is already your buddy");
+                return "redirect:/transfers";
+            }
+
+            user.getBuddies().add(buddy);
             try {
-                userService.save(userInfo);
-                redirAttrs.addFlashAttribute("success", "The buddy has been saved successfully!");
+                userService.save(user);
+                redirAttrs.addFlashAttribute("success", "The buddy has been added successfully!");
             } catch (Exception e) {
-                redirAttrs.addAttribute("error", e.getMessage());
+                redirAttrs.addFlashAttribute("error", e.getMessage());
             }
 
         }
         return "redirect:/transfers";
     }
+
+
 
     @GetMapping("/contact")
     public String contact(Model model) {

@@ -23,6 +23,6 @@ public class Transfer {
     @ManyToOne(fetch = FetchType.EAGER)
     private Account accountReceiver;
     private Date date;
-    private double amount;
+    private Double amount;
     private String description;
 }

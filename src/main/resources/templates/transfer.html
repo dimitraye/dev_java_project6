@@ -66,8 +66,8 @@
               method="post">
 
             <div class="col-sm-4">
-                <select name="accountReceiver" id="accountReceiver" class="form-select" >
-                    <option selected="selected">Select a connection</option>
+                <select name="accountReceiver" id="accountReceiver" class="form-select" required>
+                    <option value="" disabled selected hidden>Select a connection</option>
                     <option th:each="buddy : ${buddies}"
                             th:value="${buddy.id}"
                             th:text="${buddy.email}"
@@ -81,7 +81,7 @@
             </div>
             <div class="col-sm-3">
                 <div class="input-group">
-                    <input id="amount" name="amount" type="number" class="form-control" placeholder="0€" min="0" th:field="*{amount}"  step="0.01">
+                    <input type="number" required id="amount" name="amount" class="form-control" placeholder="0" min="0" th:field="*{amount}"  step="0.01">
                     <span class="input-group-text">€</span>
                 </div>
             </div>
@@ -189,7 +189,7 @@
 <script>
     setTimeout(function() {
         bootstrap.Alert.getOrCreateInstance(document.querySelector(".alert")).close();
-    }, 3000)
+    }, 5000)
 </script>
 
 </body>
