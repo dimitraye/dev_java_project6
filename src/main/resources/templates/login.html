@@ -42,15 +42,34 @@
 
   </div>
 
+
+  <div class="container mt-5 p-4 col-3 col-offset-3 ">
+    <div th:if="${error != null}" class="alert alert-danger alert-dismissible">
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      <strong>Error!</strong> [[${error}]]
+    </div>
+
+
+    <div th:if="${success != null}" class="alert alert-success alert-dismissible">
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      <strong>Success!</strong> [[${success}]]
+    </div>
+  </div>
+
   <div class="container mt-5 p-4 col-3 col-offset-3 border">
     <div class="d-grid gap-2">
       <a type="button" class="btn btn-primary btn-lg btn-block" th:href="@{/userform}">Sign Up</a>
     </div>
   </div>
 
+
 </div>
 
-
+<script>
+    setTimeout(function() {
+        bootstrap.Alert.getOrCreateInstance(document.querySelector(".alert")).close();
+    }, 5000)
+</script>
 
 
 

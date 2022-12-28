@@ -30,6 +30,7 @@ public class TransactionApplication {
 		return args -> {
 			//--------------
 			List<User> users = new ArrayList<>();
+			List<User> usersFromDB = new ArrayList<>();
 			List<Account> accounts = new ArrayList<>();
 			String role = "ROLE_USER";
 			String roleAdmin = "ROLE_USER,ROLE_ADMIN";
@@ -54,12 +55,27 @@ public class TransactionApplication {
 			try {
 				users.forEach(user -> {
 					User userFromDB = userRepository.save(user);
+					usersFromDB.add(userFromDB);
 					accounts.add(userFromDB.getAccount());
 				});
 				System.out.println("Users Saved!");
 
 			} catch (Exception e){
 				System.out.println("Unable to save users: " + e.getMessage());
+			}
+
+			//Add Buddies to users
+			usersFromDB.get(0).getBuddies().add(usersFromDB.get(1));
+			usersFromDB.get(0).getBuddies().add(usersFromDB.get(3));
+			usersFromDB.get(1).getBuddies().add(usersFromDB.get(2));
+			usersFromDB.get(4).getBuddies().add(usersFromDB.get(5));
+			usersFromDB.get(4).getBuddies().add(usersFromDB.get(0));
+			try {
+				userRepository.saveAll(usersFromDB);
+				System.out.println("Users's buddies Saved!");
+
+			} catch (Exception e){
+				System.out.println("Unable to save users's buddies: " + e.getMessage());
 			}
 
 			//Create some transfers :

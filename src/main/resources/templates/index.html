@@ -52,7 +52,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="number" class="form-control" placeholder="0" name="incomeamount" min="0" step="0.01">
+                                <input type="number" class="form-control" placeholder="0" name="incomeamount" min="0" step="0.01" required>
                                 <span class="input-group-text">€</span>
                             </div>
                         </div>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="number" class="form-control" placeholder="0" name="outcomeamount" min="0"  step="0.01">
+                                <input type="number" class="form-control" placeholder="0" name="outcomeamount" min="0"  step="0.01" required>
                                 <span class="input-group-text">€</span>
                             </div>
                         </div>
@@ -155,7 +155,25 @@
 
         </div>
     </div>
+
+    <div th:if="${error != null}" class="alert alert-danger alert-dismissible">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Error!</strong> [[${error}]]
+    </div>
+
+
+    <div th:if="${success != null}" class="alert alert-success alert-dismissible">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Success!</strong> [[${success}]]
+    </div>
+
 </div>
+
+<script>
+    setTimeout(function() {
+        bootstrap.Alert.getOrCreateInstance(document.querySelector(".alert")).close();
+    }, 5000)
+</script>
 
 </body>
 </html>
