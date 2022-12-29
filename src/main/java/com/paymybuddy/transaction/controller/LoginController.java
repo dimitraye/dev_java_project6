@@ -27,13 +27,14 @@ public class LoginController {
     IUserService userService;
 
     /**
-     *
+     * Return the login  page
      * @param model
      * @param redirectAttrs
      * @return
      */
     @GetMapping("/login")
     public String login(Model model, RedirectAttributes redirectAttrs) {
+        //Récupère le user courrant et cérifie si'il edt authentifié
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             User user = userService.getUserDetails();
@@ -45,7 +46,7 @@ public class LoginController {
     }
 
     /**
-     *
+     * Manage the logout
      * @param request
      * @param response
      * @return
@@ -56,6 +57,6 @@ public class LoginController {
         if (auth != null){
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "redirect:/login?logout";
+        return "redirect:/login?error";
     }
 }

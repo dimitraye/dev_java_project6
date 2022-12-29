@@ -31,8 +31,11 @@ public class SecurityConfig {
             //Any other request need to be authentified
             .anyRequest().authenticated()
         )
+        //Gestion de l'authentification de user JPA Spring security
         .userDetailsService(jpaUserDetailsService)
+        //
         .headers(headers -> headers.frameOptions().sameOrigin())
+        //Authentification par formulaire
         .formLogin()
         .loginPage("/login")
         .permitAll()
