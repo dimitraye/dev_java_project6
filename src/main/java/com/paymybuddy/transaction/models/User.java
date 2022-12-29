@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
+
+/**
+ * Model of the table User
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
 
+
+/**
+ * Model of the table Transfer
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
