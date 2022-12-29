@@ -100,6 +100,7 @@
             <th>Connection</th>
             <th>Description</th>
             <th>Amount</th>
+            <th>Commission</th>
         </tr>
         </thead>
         <tbody>
@@ -107,6 +108,7 @@
             <td th:text="${transfer.accountReceiver.user.email}" />
             <td th:text="${transfer.description}" />
             <td th:text="${transfer.amount} + ' €'" />
+            <td th:text="${transfer.commission} + ' €'" />
         </tr>
 
         <tr>

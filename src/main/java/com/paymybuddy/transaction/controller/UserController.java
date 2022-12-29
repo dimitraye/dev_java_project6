@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
+/**
+ * Manage the requests linked to a user
+ */
 @Controller
 public class UserController {
     @Autowired
@@ -29,9 +33,12 @@ public class UserController {
     ITransferService transferService;
 
 
-
-
-    //Page d'accueil
+    /**
+     *
+     * @param model
+     * @return
+     */
+    //Home page
     @GetMapping(value={"", "/", "/index"})
     public String index(Model model) {
         User userInfo = (User) model.getAttribute("user");
@@ -50,9 +57,16 @@ public class UserController {
         model.addAttribute("userAccountId", userAccountId);
         model.addAttribute("balance", balance);
 
+        //return the file index.html (load the page)
         return "index";
     }
 
+    /**
+     *
+     * @param user
+     * @param redirAttrs
+     * @return
+     */
     @PostMapping("/adduser")
     public String addUser(User user, RedirectAttributes redirAttrs) {
 
@@ -78,12 +92,23 @@ public class UserController {
         return "redirect:/login";
     }
 
+    /**
+     *
+     * @param model
+     * @return
+     */
     @GetMapping("/userform")
     public String userForm(Model model) {
         model.addAttribute("user", new User());
         return "userform";
     }
 
+    /**
+     *
+     * @param email
+     * @param redirAttrs
+     * @return
+     */
     @GetMapping("/addbuddy")
     public String addBudy(@RequestParam String email, RedirectAttributes redirAttrs) {
         System.out.println("enter in add buddy");
@@ -122,7 +147,11 @@ public class UserController {
     }
 
 
-
+    /**
+     *
+     * @param model
+     * @return
+     */
     @GetMapping("/contact")
     public String contact(Model model) {
         User userInfo = (User) model.getAttribute("user");
@@ -137,6 +166,11 @@ public class UserController {
     }
 
 
+    /**
+     *
+     * @param model
+     * @return
+     */
     @GetMapping("/profile")
     public String getProfile(Model model) {
         User userInfo = (User) model.getAttribute("user");

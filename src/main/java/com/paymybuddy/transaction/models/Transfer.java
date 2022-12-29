@@ -29,4 +29,6 @@ public class Transfer {
     private Date date;
     private Double amount;
     private String description;
+
+    private double commission;
 }

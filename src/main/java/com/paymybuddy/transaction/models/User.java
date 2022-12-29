@@ -28,6 +28,7 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     private Account account;
 
+    //Those 3 properties are used for Spring Security
     private String username;
     private String password;
     private String roles;

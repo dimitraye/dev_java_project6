@@ -17,11 +17,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+/**
+ * Manage the requests linked to the login
+ */
 @Controller
 public class LoginController {
     @Autowired
     IUserService userService;
 
+    /**
+     *
+     * @param model
+     * @param redirectAttrs
+     * @return
+     */
     @GetMapping("/login")
     public String login(Model model, RedirectAttributes redirectAttrs) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -34,6 +44,12 @@ public class LoginController {
         return "login";
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(value="/logout")
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

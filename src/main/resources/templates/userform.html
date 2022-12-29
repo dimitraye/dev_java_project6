@@ -22,10 +22,10 @@
 
   <div class="mt-4 p-5 bg-light rounded">
 
-    <form
-            th:action="@{/adduser}"
-            th:object="${user}"
-            method="post">
+    <form  th:if="${user}"
+           th:action="@{/adduser}"
+           th:object="${user}"
+           method="post">
 
       <div class="mb-3 mt-3">
         <label for="firstname" class="form-label">Firstname :</label>
@@ -80,3 +80,4 @@
 
 </body>
 </html>
+

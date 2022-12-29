@@ -1,5 +1,5 @@
-  <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Profile</title>
     <meta charset="utf-8">
@@ -29,6 +29,7 @@
         </div>
     </div>
 </nav>
+
 <div class="container-fluid">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -47,7 +48,7 @@
         <div class="col-sm-8">
 
 
-            <h3>Profile </h3>
+            <h3>My profile </h3>
             <table class="table table-bordered table-hover">
                 <thead class="table-success">
                 <tr>
@@ -58,7 +59,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr th:if= "${user !=null}">
                     <td th:text="${user.firstName}"></td>
                     <td th:text="${user.lastName}"></td>
                     <td th:text="${user.username}"></td>
@@ -92,11 +93,10 @@
                         </div>
                     </div>
                 </form>
-            </di>
+            </div>
         </div>
     </div>
 </div>
 
 </body>
 </html>
-
