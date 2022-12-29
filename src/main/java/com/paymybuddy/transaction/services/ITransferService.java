@@ -4,10 +4,13 @@ import com.paymybuddy.transaction.models.Transfer;
 
 import java.util.List;
 
+/**
+ * Interface that manage the interaction with the Transfer entity
+ */
 public interface ITransferService {
 
     /**
-     *
+     *Save a transfer in the DB
      * @param transfer
      * @return
      */
@@ -15,23 +18,23 @@ public interface ITransferService {
 
 
     /**
-     *
-     * @return
+     * Get a list of all the transactions from the DB
+     * @return a list.
      */
     List<Transfer> getListTransactions();
 
     /**
-     *
+     * Find every transfer made by an account sender
      * @param id
-     * @return
+     * @return a list of transfer.
      */
     List<Transfer> findAllByAccountSenderId (Long id);
 
     /**
-     *
+     * Find every transfer made by an account sender or account receiver
      * @param idSender
      * @param idReceiver
-     * @return
+     * @return a list of transfer.
      */
     List<Transfer> findAllByAccountSenderIdOrAccountReceiverId (Long idSender, Long idReceiver);
 

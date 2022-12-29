@@ -28,22 +28,6 @@ public class UserServiceImpl implements IUserService{
     UserRepository userRepository;
 
 
-
-    @Override
-    public User saveUser(User user) {
-        return userRepository.save(user);
-    }
-
-    @Override
-    public int getUserBalance(User user) {
-        return 0;
-    }
-
-    @Override
-    public List<Transfer> getListTransactions() {
-        return null;
-    }
-
     @Override
     public User getOauth2LoginInfo(Principal user) {
         User userInfo = new User();

@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class JpaUserDetailsService implements UserDetailsService{
 
@@ -16,6 +17,12 @@ public class JpaUserDetailsService implements UserDetailsService{
     this.userRepository = userRepository;
   }
 
+  /**
+   * Load a user by its username.
+   * @param username
+   * @return
+   * @throws UsernameNotFoundException
+   */
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return userRepository

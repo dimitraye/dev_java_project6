@@ -9,27 +9,10 @@ import java.util.Optional;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+/**
+ * Interface that manage the interaction with the User entity
+ */
 public interface IUserService {
-
-    /**
-     *
-     * @param user
-     * @return
-     */
-    User saveUser (User user);
-
-    /**
-     *
-     * @param user
-     * @return
-     */
-    int getUserBalance(User user);
-
-    /**
-     *
-     * @return
-     */
-    List<Transfer> getListTransactions();
 
 
     /**
@@ -40,7 +23,7 @@ public interface IUserService {
     User getOauth2LoginInfo(Principal user);
 
     /**
-     *
+     * Get the idToken of the user
      * @param principal
      * @return
      */
@@ -55,13 +38,13 @@ public interface IUserService {
 
 
     /**
-     *
-     * @return
+     * Get the details of the user.
+     * @return the user's details.
      */
     User getUserDetails ();
 
     /**
-     *
+     * Find the user's buddies by their account's Id
      * @param id
      * @return
      */
@@ -69,12 +52,17 @@ public interface IUserService {
 
 
     /**
-     * 
+     * Find a user by its username.
      * @param username
-     * @return
+     * @return a user.
      */
     Optional<User> findByUsername (String username);
 
 
+    /**
+     * Save a user in the DB
+     * @param user
+     * @return
+     */
     User save(User user);
 }
