@@ -47,7 +47,7 @@ public class TransferServiceImpl implements ITransferService {
         String description = StringUtils.hasText(newTransfer.getDescription()) ?
             newTransfer.getDescription() : "uncategorized";
         newTransfer.setDescription(description);
-        newTransfer.setCommission(commission);
+            newTransfer.setCommission(commission);
 
         // update the accounts balance
         accountReceiver.setBalance(accountReceiver.getBalance() + amountToTransfer);

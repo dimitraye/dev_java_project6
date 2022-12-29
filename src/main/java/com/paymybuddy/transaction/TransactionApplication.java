@@ -1,12 +1,16 @@
 package com.paymybuddy.transaction;
 
 import com.paymybuddy.transaction.models.Account;
+import com.paymybuddy.transaction.models.Friendship;
 import com.paymybuddy.transaction.models.Transfer;
 import com.paymybuddy.transaction.models.User;
+import com.paymybuddy.transaction.repositories.FriendshipRepository;
 import com.paymybuddy.transaction.repositories.TransferRepository;
 import com.paymybuddy.transaction.repositories.UserRepository;
 import com.paymybuddy.transaction.services.ITransferService;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,12 +18,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @SpringBootApplication
 public class TransactionApplication {
 
+	@Autowired
+	FriendshipRepository friendshipRepository;
 	@Autowired
 	ITransferService transferService;
 	public static void main(String[] args) {
@@ -69,13 +72,16 @@ public class TransactionApplication {
 			}
 
 			//Add Buddies to users
-			usersFromDB.get(0).getBuddies().add(usersFromDB.get(1));
-			usersFromDB.get(0).getBuddies().add(usersFromDB.get(3));
-			usersFromDB.get(1).getBuddies().add(usersFromDB.get(2));
-			usersFromDB.get(4).getBuddies().add(usersFromDB.get(5));
-			usersFromDB.get(4).getBuddies().add(usersFromDB.get(0));
+			List<Friendship> friendShips = List.of(
+					new Friendship(usersFromDB.get(0), usersFromDB.get(1)),
+					new Friendship(usersFromDB.get(0), usersFromDB.get(3)),
+					new Friendship(usersFromDB.get(1), usersFromDB.get(2)),
+					new Friendship(usersFromDB.get(4), usersFromDB.get(5)),
+					new Friendship(usersFromDB.get(4), usersFromDB.get(0))
+			);
 			try {
 				userRepository.saveAll(usersFromDB);
+				friendshipRepository.saveAll(friendShips);
 				System.out.println("Users's buddies Saved!");
 
 			} catch (Exception e){

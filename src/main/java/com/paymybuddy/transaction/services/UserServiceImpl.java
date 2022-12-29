@@ -1,7 +1,6 @@
 package com.paymybuddy.transaction.services;
 
 import com.paymybuddy.transaction.models.SecurityUser;
-import com.paymybuddy.transaction.models.Transfer;
 import com.paymybuddy.transaction.models.User;
 import com.paymybuddy.transaction.repositories.UserRepository;
 import java.security.Principal;
@@ -9,18 +8,13 @@ import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-
-
-
-
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements IUserService{
@@ -85,8 +79,8 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-    public User findWithBuddiesAndAccountById(Long id) {
-        return userRepository.findWithBuddiesAndAccountById(id);
+    public User findWithFriendshipsAndAccountById(Long id) {
+        return userRepository.findWithFriendshipsAndAccountById(id);
     }
 
     @Override
