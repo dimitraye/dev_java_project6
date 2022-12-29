@@ -10,6 +10,12 @@ import java.util.List;
 public interface ITransferService {
 
     /**
+     *
+     * @param newTransfer
+     * @return
+     */
+    Transfer executeTransfer(Transfer newTransfer);
+    /**
      *Save a transfer in the DB
      * @param transfer
      * @return

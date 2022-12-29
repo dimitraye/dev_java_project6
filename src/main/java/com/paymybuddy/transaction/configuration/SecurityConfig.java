@@ -21,11 +21,14 @@ public class SecurityConfig {
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
+        //Accès à H2
         .csrf(csrf -> csrf.ignoringAntMatchers("/h2-console/**"))
+        //Auhorisations d'accès aux requêtes
         .authorizeRequests( auth -> auth
             .antMatchers("/h2-console/**").permitAll()
             .antMatchers("/userform").permitAll()
             .antMatchers("/adduser").permitAll()
+            //Any other request need to be authentified
             .anyRequest().authenticated()
         )
         .userDetailsService(jpaUserDetailsService)

@@ -5,7 +5,9 @@ import com.paymybuddy.transaction.models.Transfer;
 import com.paymybuddy.transaction.models.User;
 import com.paymybuddy.transaction.repositories.TransferRepository;
 import com.paymybuddy.transaction.repositories.UserRepository;
+import com.paymybuddy.transaction.services.ITransferService;
 import java.util.Date;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,6 +20,8 @@ import java.util.List;
 @SpringBootApplication
 public class TransactionApplication {
 
+	@Autowired
+	ITransferService transferService;
 	public static void main(String[] args) {
 		SpringApplication.run(TransactionApplication.class, args);
 	}
@@ -40,7 +44,7 @@ public class TransactionApplication {
 			List<String> firstnames = List.of("user", "admin", "Jean", "Anna", "Olivier", "Sophie", "Omar", "Greg");
 			List<String> lastnames = List.of("user", "admin", "Gouvert", "Doter", "Cavaillon", "Martin", "Sy", "Roland");
 			List<String> roles = List.of(role, roleAdmin, role, role, role, role, role, role);
-			List<Double> balances = List.of(0.0, 0.0, 0.0, 50.0, 100.0, 45.0, 18.50, 73.65);
+			List<Double> balances = List.of(3000d, 500d, 789d, 50.0, 100.0, 45.0, 0d, 73.65);
 			for (int i =0; i < 8; i++) {
 				User user = new User();
 				user.setFirstName(firstnames.get(i));
@@ -123,9 +127,8 @@ public class TransactionApplication {
 
 			List<Transfer> transfers = List.of(transfer1, transfer2, transfer3, transfer4, transfer5);
 			try {
-				transferRepository.saveAll(transfers);
+				transfers.forEach(transferService::executeTransfer);
 				System.out.println("transfers Saved!");
-
 			} catch (Exception e){
 				System.out.println("Unable to save transfers: " + e.getMessage());
 			}
