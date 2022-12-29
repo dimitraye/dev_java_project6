@@ -22,7 +22,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
    * @param id
    * @return the buddies.
    */
-  User findWithBuddiesAndAccountById(Long id);
+  User findWithFriendshipsAndAccountById(Long id);
 
 
 

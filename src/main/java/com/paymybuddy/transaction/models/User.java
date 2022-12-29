@@ -23,8 +23,12 @@ public class User {
     private String firstName;
     private String lastName;
     private String externalUserId;
-    @OneToMany
-    private List<User> buddies = new ArrayList<>();
+    // ...
+    /**
+     * the list of friendships asked by this user
+     */
+    @OneToMany(mappedBy = "sourceUser")
+    private List<Friendship> friendships = new ArrayList<Friendship>();
     @OneToOne(cascade = CascadeType.ALL)
     private Account account;
 

@@ -7,6 +7,7 @@ import com.paymybuddy.transaction.services.ITransferService;
 import com.paymybuddy.transaction.services.IUserService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ public class TransferController {
     @GetMapping("/transfers")
     public String getTransfers(Model model, RedirectAttributes redirAttrs) {
         User user = userService.getUserDetails();
-        user = userService.findWithBuddiesAndAccountById(user.getId());
+        user = userService.findWithFriendshipsAndAccountById(user.getId());
 
         List<Transfer> transfers = new ArrayList<>();
         Long accountId = user.getAccount().getId();
@@ -44,9 +45,13 @@ public class TransferController {
         }
         transferService.findAllByAccountSenderId(accountId).forEach(transfers::add);
 
+        List<User> friends = user.getFriendships().stream()
+            .map(friendShip -> friendShip.getTargetUser())
+            .collect(Collectors.toList());
+
         model.addAttribute("user", user);
         model.addAttribute("transfers", transfers);
-        model.addAttribute("buddies", user.getBuddies());
+        model.addAttribute("buddies", friends);
         model.addAttribute("newTransfer", new Transfer());
         //return the file transfer.html.
         return "transfer";

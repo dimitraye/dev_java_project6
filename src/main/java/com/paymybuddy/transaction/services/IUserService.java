@@ -1,10 +1,7 @@
 package com.paymybuddy.transaction.services;
 
-import com.paymybuddy.transaction.models.Transfer;
 import com.paymybuddy.transaction.models.User;
-
 import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -48,7 +45,7 @@ public interface IUserService {
      * @param id
      * @return
      */
-    User findWithBuddiesAndAccountById(Long id);
+    User findWithFriendshipsAndAccountById(Long id);
 
 
     /**
