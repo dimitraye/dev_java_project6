@@ -60,11 +60,11 @@ public class AccountController {
     public String removeMoneyFromAccount(@RequestParam double outcomeamount, RedirectAttributes redirAttrs) {
         User user = userService.getUserDetails();
         Account account = user.getAccount();
-
+        //Vérifie que la balance est supérieur au montant à transférer.
         if (outcomeamount <= account.getBalance()) {
             account.setBalance(account.getBalance() - outcomeamount);
         } else {
-            //
+            //Stock le message d'errueur dans l'objet redirecAttribut
             redirAttrs.addFlashAttribute("error", "The amount you want to remove is greater than your current balance");
             //Redirect toward the method at the endpoint /index
             return "redirect:/index";
@@ -72,10 +72,10 @@ public class AccountController {
 
         try {
             accountService.save(account);
-            //
+            //Stock le message de succès dans l'objet redirecAttribut
             redirAttrs.addFlashAttribute("success", "The money has been removed successfully!");
         } catch (Exception e) {
-            //
+            //Stock le message d'errueur dans l'objet redirecAttribut
             redirAttrs.addFlashAttribute("error", e.getMessage());
         }
 

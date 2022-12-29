@@ -34,7 +34,7 @@ public class UserController {
 
 
     /**
-     *
+     *Manage the Index page
      * @param model
      * @return
      */
@@ -46,12 +46,14 @@ public class UserController {
         Long userAccountId = null;
         Double balance = 0.0;
 
-        if (userInfo == null) {// it means it is a direct click
+        if (userInfo == null) {
+            //Récupère l'utilisateur courrant
             userInfo = userService.getUserDetails();
         }
 
         userAccountId = userInfo.getAccount().getId();
         balance = userInfo.getAccount().getBalance();
+        //Récupère tous les transfers liés à un user
         transfers = transferService.findAllByAccountSenderIdOrAccountReceiverId(userAccountId, userAccountId);
         model.addAttribute("transfers", transfers);
         model.addAttribute("userAccountId", userAccountId);
@@ -62,7 +64,7 @@ public class UserController {
     }
 
     /**
-     *
+     * Manage the user registration
      * @param user
      * @param redirAttrs
      * @return
@@ -77,12 +79,14 @@ public class UserController {
         User userFromDb = userService.findByUsername(user.getUsername()).orElse(null);
 
         if (userFromDb != null) {
+            //Envoie un message sur la page de redirection
             redirAttrs.addFlashAttribute("error", "This email is already registered in our database");
             return "redirect:/userform";
         }
 
         try {
             userService.save(user);
+            //Envoie un message sur la page de redirection
             redirAttrs.addFlashAttribute("success", "Your user account has been created successfully!");
         } catch (Exception e) {
             redirAttrs.addFlashAttribute("error", e.getMessage());

@@ -7,7 +7,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-
+/**
+ * Service Spring Security qui gère l'authentification sécurisée du user
+ */
 @Service
 public class JpaUserDetailsService implements UserDetailsService{
 

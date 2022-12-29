@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface UserRepository extends JpaRepository<User, Long> {
 
   /**
-   * Find a user by its username.
+   * Find a user by its username(email).
    * @param username
    * @return the user.
    */
@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
   /**
-   * Find the buddies of a user by their account's Id.
+   * Find the user with his buddies and his account by searching its Id.
    * @param id
    * @return the buddies.
    */

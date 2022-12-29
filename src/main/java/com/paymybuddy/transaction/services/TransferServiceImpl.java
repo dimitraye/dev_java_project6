@@ -29,16 +29,18 @@ public class TransferServiceImpl implements ITransferService {
         Account accountReceiver = newTransfer.getAccountReceiver();
         Account accountSender = newTransfer.getAccountSender();
 
-        double outcomeamount = newTransfer.getAmount();
+        double transferAmount = newTransfer.getAmount();
 
 
-        if (outcomeamount > accountSender.getBalance()) {
+        if (transferAmount > accountSender.getBalance()) {
             log.debug("The transfer amount is greater than your balance");
             return null;
         }
 
-        double commission = outcomeamount * 0.005;
-        double amountToTransfer = outcomeamount - commission;
+        //Calcul de la commission 0.5%
+        double commission = transferAmount * 0.005;
+        //Soustrait la commission du montant à transférer
+        double amountToTransfer = transferAmount - commission;
         // complete transfer data
         newTransfer.setAmount(amountToTransfer);
         newTransfer.setDate(new Date());
@@ -47,15 +49,15 @@ public class TransferServiceImpl implements ITransferService {
         newTransfer.setDescription(description);
         newTransfer.setCommission(commission);
 
-        // update the account balance
+        // update the accounts balance
         accountReceiver.setBalance(accountReceiver.getBalance() + amountToTransfer);
-        accountSender.setBalance(accountSender.getBalance() - outcomeamount);
+        accountSender.setBalance(accountSender.getBalance() - transferAmount);
 
         // update the accounts and save the transfer in db
         try {
             accountRepository.save(accountReceiver);
             accountRepository.save(accountSender);
-            log.info("Saving Transaction...");
+            log.info("Saving Transfer...");
             return transferRepository.save(newTransfer);
         } catch (Exception e) {
             log.error("Error while trying to execute transaction", e.getMessage());
